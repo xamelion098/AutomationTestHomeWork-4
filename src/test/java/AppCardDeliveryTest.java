@@ -36,7 +36,8 @@ public class AppCardDeliveryTest {
         $(".button").click();
         $("[data-test-id=notification]").shouldBe(visible, Duration.ofSeconds(16));
         $("[data-test-id='notification'] .notification__content")
-                .shouldHave(text("Встреча успешно забронирована на " + validDate),visible);
+                .shouldHave(text("Встреча успешно забронирована на " + validDate),visible)
+        ;
     }
 
     @Test
