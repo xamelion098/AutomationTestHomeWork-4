@@ -6,10 +6,8 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-import static com.codeborne.selenide.Condition.text;
-import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selectors.byText;
-import static com.codeborne.selenide.Selectors.withText;
 import static com.codeborne.selenide.Selenide.*;
 
 
@@ -19,7 +17,6 @@ public class AppCardDeliveryTest {
     private String dataGenerate(int step) {
         return LocalDate.now().plusDays(step).format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
     }
-
 
     String validDate = dataGenerate(4);
     String invalideDate = dataGenerate(-1);
@@ -38,7 +35,8 @@ public class AppCardDeliveryTest {
         $("[data-test-id=agreement]").click();
         $(".button").click();
         $("[data-test-id=notification]").shouldBe(visible, Duration.ofSeconds(16));
-        $(withText("Встреча забронирована на" + validDate));
+        $("[data-test-id='notification'] .notification__content")
+                .shouldHave(text("Встреча успешно забронирована на " + validDate),visible);
     }
 
     @Test
@@ -124,19 +122,5 @@ public class AppCardDeliveryTest {
         $(byText("Я соглашаюсь с условиями обработки и использования моих персональных данных")).shouldBe(visible);
     }
 
-   @Test
-  public void datePicker()  {
-       open("http://localhost:9999/");
-       $("[data-test-id='city'] input").setValue("Во");
-       $(".input__menu").find(withText("Волгоград")).click();
-       $(".calendar-input__custom-control").click();
-       $$(".calendar__day").findBy(text("5")).click();
-       $("[data-test-id=name] input").setValue("Иванов Иван");
-       $("[data-test-id=phone] input").setValue("+79951233434");
-       $("[data-test-id=agreement]").click();
-       $(".button").click();
-       $("[data-test-id=notification]").shouldBe(visible, Duration.ofSeconds(16));
-       $(withText("Встреча забронирована на" + validDate));
-       }
    }
 
